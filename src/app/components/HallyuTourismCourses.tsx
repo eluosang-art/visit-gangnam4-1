@@ -11,15 +11,9 @@ const slides = [
   },
   {
     id: 2,
-    title: 'Dulle-gil',
-    tags: ['#강남둘레길', '#강남산책', '#도심속휴식', '#강남가볼만한곳', '#강남데이트'],
-    image: '/images/hallyu-dullegil.png',
-  },
-  {
-    id: 3,
-    title: 'People of Gangnam',
-    tags: ['#강남에세이', '#강남의사람들', '#강민구셰프', '#밍글스', '#미쉐린가이드'],
-    image: '/images/hallyu-people.png',
+    title: 'Gangnam Festival',
+    tags: ['#강남페스티벌', '#GangnamFestival', '#서울축제', '#가을축제', '#K-pop'],
+    image: '/images/hallyu-festival-2.png',
   },
 ];
 
@@ -215,7 +209,7 @@ export function HallyuTourismCourses() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative" style={{ height: '300vh' }}>
+    <div ref={containerRef} className="relative" style={{ height: '200vh' }}>
       {/* Sticky Container */}
       <div className="sticky top-0 h-screen overflow-hidden flex items-center">
         {/* Background Images - animated horizontal slide */}

@@ -78,17 +78,6 @@ const stories = [
   },
 ];
 
-const BlobDivider = ({ flip = false }: { flip?: boolean }) => (
-  <div className={`w-full ${flip ? 'rotate-180' : ''}`}>
-    <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-      <path
-        d="M0,64 C240,32 480,96 720,80 C960,64 1200,32 1440,48 L1440,120 L0,120 Z"
-        fill="#fffaf7"
-      />
-    </svg>
-  </div>
-);
-
 const SparkleStars = () => (
   <>
     <motion.div
@@ -136,9 +125,6 @@ export function EditorialStories() {
 
   return (
     <>
-      {/* Top Blob Divider */}
-      <BlobDivider />
-
       <section
         className="relative py-20"
         style={{ backgroundColor: '#fffaf7' }}
@@ -376,8 +362,6 @@ export function EditorialStories() {
         </div>
       </section>
 
-      {/* Bottom Blob Divider */}
-      <BlobDivider flip />
     </>
   );
 }

@@ -138,7 +138,7 @@ const BouncingPlay = () => (
 
 export function VideoShowcase() {
   const [selectedVideo, setSelectedVideo] = useState<typeof videos[0] | null>(null);
-  const [isHovering, setIsHovering] = useState(false);
+  const isHoveringRef = useRef(false);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const tickerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number>(0);
@@ -149,7 +149,7 @@ export function VideoShowcase() {
     if (!ticker) return;
 
     const scroll = () => {
-      if (!isHovering) {
+      if (!isHoveringRef.current) {
         scrollPositionRef.current += 0.5;
         ticker.scrollLeft = scrollPositionRef.current;
 
@@ -168,7 +168,7 @@ export function VideoShowcase() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isHovering]);
+  }, []);
 
   const duplicatedVideos = [...videos, ...videos];
 
@@ -248,9 +248,9 @@ export function VideoShowcase() {
               paddingLeft: '20px',
               paddingRight: '20px',
             }}
-            onMouseEnter={() => setIsHovering(true)}
+            onMouseEnter={() => { isHoveringRef.current = true; }}
             onMouseLeave={() => {
-              setIsHovering(false);
+              isHoveringRef.current = false;
               setHoveredId(null);
             }}
           >

@@ -81,17 +81,6 @@ const themes = [
   },
 ];
 
-const BlobDivider = ({ flip = false }: { flip?: boolean }) => (
-  <div className={`w-full ${flip ? 'rotate-180' : ''}`}>
-    <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-      <path
-        d="M0,64 C240,32 480,96 720,80 C960,64 1200,32 1440,48 L1440,120 L0,120 Z"
-        fill="#fef9f4"
-      />
-    </svg>
-  </div>
-);
-
 const SparkleStars = () => (
   <>
     <motion.div
@@ -139,12 +128,9 @@ const SparkleStars = () => (
 export function ThemedDestinations() {
   return (
     <>
-      {/* Top Blob Divider */}
-      <BlobDivider />
-
-      <section 
+      <section
         className="relative py-20"
-        style={{ backgroundColor: '#fef9f4' }}
+        style={{ backgroundColor: '#faf5ef' }}
       >
         <div className="max-w-[1280px] mx-auto px-5 md:px-20">
           {/* Section Heading */}
@@ -287,8 +273,6 @@ export function ThemedDestinations() {
         </div>
       </section>
 
-      {/* Bottom Blob Divider */}
-      <BlobDivider flip />
     </>
   );
 }

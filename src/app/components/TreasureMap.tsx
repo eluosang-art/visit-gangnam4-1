@@ -66,12 +66,22 @@ const LandmarkCard = ({ landmark, onClose }: { landmark: typeof landmarks[0]; on
   </motion.div>
 );
 
+const courses = [
+  { id: 'course1', name: '1코스', bg: '#fef0ec', text: '#e8628c' },
+  { id: 'course2', name: '2코스', bg: '#fef4ec', text: '#c07840' },
+  { id: 'course3', name: '3코스', bg: '#f0faf5', text: '#4a9a6a' },
+  { id: 'course4', name: '4코스', bg: '#eef0fe', text: '#5a6acf' },
+  { id: 'course5', name: '5코스', bg: '#fef0f8', text: '#c05a9a' },
+  { id: 'course6', name: '6코스', bg: '#f5f0fe', text: '#8a5ac0' },
+];
+
 export function TreasureMap() {
   const [activeLandmark, setActiveLandmark] = useState<number | null>(null);
+  const [activeCourse, setActiveCourse] = useState('course1');
   const selectedLandmark = activeLandmark !== null ? landmarks.find(l => l.id === activeLandmark) : null;
 
   return (
-    <section className="relative py-20 overflow-hidden" style={{ backgroundColor: '#fffaf7' }}>
+    <section className="relative py-20 overflow-hidden" style={{ backgroundColor: '#faf5ef' }}>
       <div className="max-w-[1480px] mx-auto px-5 md:px-20">
         {/* Header */}
         <div className="mb-8">
@@ -90,6 +100,32 @@ export function TreasureMap() {
             >
               <img src="/images/icon-map.svg" alt="map" className="w-10 h-10" />
             </motion.div>
+          </div>
+        </div>
+
+        {/* Course Filter */}
+        <div className="mb-8 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-3 min-w-max md:min-w-0">
+            {courses.map((course) => (
+              <motion.button
+                key={course.id}
+                onClick={() => setActiveCourse(course.id)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                className="px-5 py-2.5 rounded-full transition-all"
+                style={{
+                  backgroundColor: activeCourse === course.id ? course.bg : '#f5ede8',
+                  color: activeCourse === course.id ? course.text : '#b8a99a',
+                  fontFamily: 'Pretendard, -apple-system, sans-serif',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  border: activeCourse === course.id ? 'none' : '1px solid #f0ebe6',
+                }}
+              >
+                {course.name}
+              </motion.button>
+            ))}
           </div>
         </div>
 
