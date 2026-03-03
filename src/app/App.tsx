@@ -18,12 +18,12 @@ export default function App() {
       color: '#2d2926'
     }}>
       <Hero />
-      <StoryBookScroll />
-      <HallyuTourismCourses />
-      <CulturalEvents />
       <ThemedDestinations />
+      <StoryBookScroll />
       <EditorialStories />
+      <HallyuTourismCourses />
       <PeopleOfGangnam />
+      <CulturalEvents />
       <VideoShowcase />
       <TreasureMap />
       <FAQ />

@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>비짓강남 시안 레이아웃 순서 변경 비교 분석</title>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      background: #1a1714;
+      color: #2d2926;
+      line-height: 1.7;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* ===== Slide System ===== */
+    .slide-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 80px;
+      opacity: 0;
+      transform: translateX(60px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: all;
+    }
+
+    .slide-inner {
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    /* ===== Navigation ===== */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: rgba(26, 23, 20, 0.95);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 100;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      color: #c4b8ac;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .nav-btn:hover {
+      background: rgba(232, 98, 140, 0.15);
+      border-color: #e8628c;
+      color: #fff;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .nav-btn:disabled:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.15);
+      color: #c4b8ac;
+    }
+
+    .nav-progress {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-dot.active {
+      background: #e8628c;
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    .page-num {
+      color: #8a7e74;
+      font-size: 13px;
+      font-weight: 500;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    /* ===== Slide Backgrounds ===== */
+    .slide { background: #f8f6f3; }
+    .slide-cover { background: linear-gradient(135deg, #2d2926, #3d3530); }
+    .slide-dark { background: linear-gradient(135deg, #2d2926, #3a3430); }
+    .slide-end { background: linear-gradient(135deg, #e8628c, #d4567a); }
+
+    /* ===== Cover Slide ===== */
+    .cover-content {
+      text-align: center;
+      color: #fff;
+    }
+    .cover-badge {
+      display: inline-block;
+      background: #e8628c;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 18px;
+      border-radius: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .cover-content h1 {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+    .cover-content .subtitle {
+      font-size: 18px;
+      color: #c4b8ac;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .cover-content .date {
+      font-size: 14px;
+      color: #8a7e74;
+      margin-top: 32px;
+    }
+    .cover-content .start-hint {
+      margin-top: 48px;
+      font-size: 13px;
+      color: #6b5e53;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* ===== Section Title (used in content slides) ===== */
+    .slide-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e8628c;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+    .slide-heading {
+      font-size: 32px;
+      font-weight: 800;
+      color: #2d2926;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .slide-desc {
+      font-size: 16px;
+      color: #8a7e74;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    /* ===== Comparison Table ===== */
+    .comparison-wrap {
+      display: grid;
+      grid-template-columns: 1fr 50px 1fr;
+      gap: 0;
+    }
+    .comparison-col {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .comparison-col.old { border: 2px solid #e0d8cf; }
+    .comparison-col.new { border: 2px solid #e8628c; }
+    .comparison-col h3 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #b8a99a;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .comparison-col.new h3 { color: #e8628c; }
+    .arrow-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #e8628c;
+    }
+    .comp-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      margin-bottom: 3px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .comp-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: #f0ebe6;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #8a7e74;
+      flex-shrink: 0;
+    }
+    .comparison-col.new .comp-num {
+      background: #fde8ef; color: #e8628c;
+    }
+    .comp-item.changed { background: #fef5f0; }
+    .comp-item.changed .comp-label { font-weight: 700; color: #e8628c; }
+    .move-badge {
+      font-size: 10px; padding: 2px 7px;
+      border-radius: 10px; font-weight: 600;
+      margin-left: auto; flex-shrink: 0;
+    }
+    .move-up { background: #e6f7ee; color: #2a9d5c; }
+    .move-down { background: #fde8ef; color: #c94e78; }
+    .move-same { background: #f0ebe6; color: #b8a99a; }
+
+    /* ===== Flow Diagram ===== */
+    .flow-section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      border: 1px solid #f0ebe6;
+    }
+    .flow-title {
+      font-size: 15px; font-weight: 700;
+      text-align: center; margin-bottom: 24px; color: #2d2926;
+    }
+    .flow-steps {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 6px; align-items: center;
+    }
+    .flow-step {
+      background: linear-gradient(135deg, #fef5f0, #fff);
+      border: 1px solid #f0ebe6;
+      border-radius: 10px;
+      padding: 10px 14px;
+      text-align: center;
+      min-width: 90px;
+    }
+    .flow-step .step-emoji { font-size: 18px; margin-bottom: 2px; }
+    .flow-step .step-phase {
+      font-size: 9px; font-weight: 700;
+      color: #e8628c; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .flow-step .step-name {
+      font-size: 11px; font-weight: 600; color: #2d2926; margin-top: 2px;
+    }
+    .flow-arrow { color: #e0d8cf; font-size: 16px; }
+
+    /* ===== Analysis Card (single per slide) ===== */
+    .analysis-single {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .analysis-left .card-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg, #e8628c, #f09ab0);
+      color: #fff; font-size: 22px; font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .analysis-left h3 {
+      font-size: 28px; font-weight: 800; color: #2d2926;
+      margin-bottom: 8px; line-height: 1.3;
+    }
+    .analysis-left .term {
+      font-size: 13px; color: #e8628c; font-weight: 600;
+      letter-spacing: 0.5px; margin-bottom: 20px; display: block;
+    }
+    .analysis-left p {
+      font-size: 16px; color: #6b5e53; line-height: 1.9;
+    }
+    .analysis-left .highlight {
+      background: #fef0ec; padding: 2px 6px; border-radius: 4px;
+      font-weight: 600; color: #d4567a;
+    }
+    .analysis-visual {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      border: 1px solid #f0ebe6;
+    }
+    .analysis-visual .vis-label {
+      font-size: 12px; font-weight: 600; color: #b8a99a;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;
+    }
+    .vis-flow-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: 10px;
+      margin-bottom: 6px; font-size: 14px; font-weight: 500;
+      background: #faf7f4; border: 1px solid #f0ebe6;
+      transition: all 0.2s;
+    }
+    .vis-flow-item.accent {
+      background: #fef0ec; border-color: #f9c4d4;
+      font-weight: 700; color: #e8628c;
+    }
+    .vis-flow-item .vis-icon { font-size: 18px; }
+    .vis-arrow-down {
+      text-align: center; color: #d0c8bf; font-size: 14px;
+      padding: 2px 0;
+    }
+
+    /* ===== Summary (dark slide) ===== */
+    .summary-content { color: #fff; }
+    .summary-content .slide-title { color: #f09ab0; }
+    .summary-content .slide-heading { color: #fff; margin-bottom: 32px; }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .summary-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .summary-card h4 {
+      font-size: 15px; font-weight: 700; color: #fff;
+      margin-bottom: 6px;
+    }
+    .summary-card .sum-term {
+      font-size: 11px; color: #e8628c; font-weight: 600;
+      margin-bottom: 10px; display: block;
+    }
+    .summary-card p {
+      font-size: 13px; color: #c4b8ac; line-height: 1.7;
+    }
+
+    /* ===== End Slide ===== */
+    .end-content {
+      text-align: center; color: #fff;
+    }
+    .end-content h2 {
+      font-size: 36px; font-weight: 800; margin-bottom: 12px;
+    }
+    .end-content p {
+      font-size: 16px; color: rgba(255,255,255,0.8);
+    }
+    .end-content .end-date {
+      margin-top: 32px; font-size: 13px; color: rgba(255,255,255,0.5);
+    }
+
+    /* ===== Keyboard Hint ===== */
+    .key-hint {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 12px;
+      color: #8a7e74;
+      background: rgba(255,255,255,0.06);
+      padding: 6px 14px;
+      border-radius: 6px;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .key-hint kbd {
+      background: rgba(255,255,255,0.1);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: inherit;
+      font-size: 11px;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 900px) {
+      .slide { padding: 40px 30px; }
+      .comparison-wrap { grid-template-columns: 1fr; gap: 12px; }
+      .arrow-col { transform: rotate(90deg); padding: 8px; }
+      .analysis-single { grid-template-columns: 1fr; gap: 24px; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .cover-content h1 { font-size: 28px; }
+      .slide-heading { font-size: 24px; }
+      .analysis-left h3 { font-size: 22px; }
+      .flow-steps { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="key-hint"><kbd>←</kbd> <kbd>→</kbd> 또는 하단 버튼으로 이동</div>
+
+  <div class="slide-container" id="slideContainer">
+
+    <!-- ====== SLIDE 0: Cover ====== -->
+    <div class="slide slide-cover active" data-slide="0">
+      <div class="slide-inner">
+        <div class="cover-content">
+          <div class="cover-badge">UX Review</div>
+          <h1>비짓강남 시안<br>레이아웃 순서 변경 비교 분석</h1>
+          <p class="subtitle">콘텐츠 배치 순서 개선에 따른 UI/UX 관점의 근거 정리</p>
+          <p class="date">2026. 03. 03 &nbsp;|&nbsp; Visit Gangnam Redesign</p>
+          <p class="start-hint">→ 버튼을 눌러 시작하세요</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SLIDE 1: Before / After ====== -->
+    <div class="slide" data-slide="1">
+      <div class="slide-inner">
+        <div class="slide-title">01 — Overview</div>
+        <div class="slide-heading">기존 시안 vs 변경 시안 비교</div>
+        <p class="slide-desc">전체 11개 섹션의 배치 순서를 사용자 여정 관점에서 재구성했습니다.</p>
+
+        <div class="comparison-wrap">
+          <div class="comparison-col old">
+            <h3>기존 시안 (Before)</h3>
+            <div class="comp-item"><span class="comp-num">1</span><span class="comp-label">메인 히어로</span><span class="move-badge move-same">유지</span></div>
+            <div class="comp-item changed"><span class="comp-num">2</span><span class="comp-label">시간대별 추천</span><span class="move-badge move-down">↓ 3순위로</span></div>
+            <div class="comp-item changed"><span class="comp-num">3</span><span class="comp-label">강남 페스티벌 배너</span><span class="move-badge move-down">↓ 5순위로</span></div>
+            <div class="comp-item changed"><span class="comp-num">4</span><span class="comp-label">문화행사</span><span class="move-badge move-down">↓ 7순위로</span></div>
+            <div class="comp-item changed"><span class="comp-num">5</span><span class="comp-label">테마별 여행지</span><span class="move-badge move-up">↑ 2순위로</span></div>
+            <div class="comp-item changed"><span class="comp-num">6</span><span class="comp-label">추천코스</span><span class="move-badge move-up">↑ 4순위로</span></div>
+            <div class="comp-item changed"><span class="comp-num">7</span><span class="comp-label">로컬추천</span><span class="move-badge move-up">↑ 6순위로</span></div>
+            <div class="comp-item"><span class="comp-num">8</span><span class="comp-label">유튜브 숏츠 컨텐츠</span><span class="move-badge move-same">유지</span></div>
+            <div class="comp-item"><span class="comp-num">9</span><span class="comp-label">둘레길 지도</span><span class="move-badge move-same">유지</span></div>
+            <div class="comp-item"><span class="comp-num">10</span><span class="comp-label">자주 묻는 질문</span><span class="move-badge move-same">유지</span></div>
+            <div class="comp-item"><span class="comp-num">11</span><span class="comp-label">CTA 푸터</span><span class="move-badge move-same">유지</span></div>
+          </div>
+          <div class="arrow-col">→</div>
+          <div class="comparison-col new">
+            <h3>변경 시안 (After)</h3>
+            <div class="comp-item"><span class="comp-num">1</span><span class="comp-label">메인 히어로</span><span class="move-badge move-same">유지</span></div>
+            <div class="comp-item changed"><span class="comp-num">2</span><span class="comp-label">테마별 여행지</span><span class="move-badge move-up">↑ 5→2</span></div>
+            <div class="comp-item changed"><span class="comp-num">3</span><span class="comp-label">시간대별 추천</span><span class="move-badge move-down">2→3</span></div>
+            <div class="comp-item changed"><span class="comp-num">4</span><span class="comp-label">추천코스</span><span class="move-badge move-up">↑ 6→4</span></div>
+            <div class="comp-item changed"><span class="comp-num">5</span><span class="comp-label">강남 페스티벌 배너</span><span class="move-badge move-down">3→5</span></div>
+            <div class="comp-item changed"><span class="comp-num">6</span><span class="comp-label">로컬추천</span><span class="move-badge move-up">↑ 7→6</span></div>
+            <div class="comp-item changed"><span class="comp-num">7</span><span class="comp-label">문화행사</span><span class="move-badge move-down">4→7</span></div>
+            <div class="comp-item"><span class="comp-num">8</span><span class="comp-label">유튜브 숏츠 컨텐츠</span><span class="move-badge move-same">유지</span></div>
+            <div class="comp-item"><span class="comp-num">9</span><span class="comp-label">둘레길 지도</span><span class="move-badge move-same">유지</span></div>
+            <div class="comp-item"><span class="comp-num">10</span><span class="comp-label">자주 묻는 질문</span><span class="move-badge move-same">유지</span></div>
+            <div class="comp-item"><span class="comp-num">11</span><span class="comp-label">CTA 푸터</span><span class="move-badge move-same">유지</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SLIDE 2: User Journey ====== -->
+    <div class="slide" data-slide="2">
+      <div class="slide-inner">
+        <div class="slide-title">02 — User Journey</div>
+        <div class="slide-heading">변경 시안의 사용자 여정 흐름</div>
+        <p class="slide-desc">
+          방문자가 페이지를 탐색하면서 자연스럽게 <strong>인지 → 탐색 → 몰입 → 공감 → 행동</strong>의 5단계를 거치도록 설계했습니다.
+        </p>
+
+        <div class="flow-section">
+          <div class="flow-title">사용자 감정 여정 흐름도</div>
+          <div class="flow-steps">
+            <div class="flow-step">
+              <div class="step-emoji">✨</div>
+              <div class="step-phase">Attention</div>
+              <div class="step-name">메인 히어로<br><small style="color:#8a7e74">시선 포착</small></div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <div class="step-emoji">🗺️</div>
+              <div class="step-phase">Overview</div>
+              <div class="step-name">테마별 여행지<br><small style="color:#8a7e74">전체 조망</small></div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <div class="step-emoji">📖</div>
+              <div class="step-phase">Immersion</div>
+              <div class="step-name">시간대별 추천<br><small style="color:#8a7e74">감성 몰입</small></div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <div class="step-emoji">📝</div>
+              <div class="step-phase">Explore</div>
+              <div class="step-name">추천코스<br><small style="color:#8a7e74">코스 탐색</small></div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <div class="step-emoji">💗</div>
+              <div class="step-phase">Discover</div>
+              <div class="step-name">페스티벌 배너<br><small style="color:#8a7e74">테마 심화</small></div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <div class="step-emoji">🤝</div>
+              <div class="step-phase">Empathy</div>
+              <div class="step-name">로컬추천<br><small style="color:#8a7e74">감정 연결</small></div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <div class="step-emoji">🎪</div>
+              <div class="step-phase">Action</div>
+              <div class="step-name">문화행사<br><small style="color:#8a7e74">행동 유도</small></div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <div class="step-emoji">🎬</div>
+              <div class="step-phase">Engage</div>
+              <div class="step-name">숏츠 · 지도<br><small style="color:#8a7e74">심화 탐색</small></div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <div class="step-emoji">🚀</div>
+              <div class="step-phase">Convert</div>
+              <div class="step-name">FAQ · CTA<br><small style="color:#8a7e74">전환 완료</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SLIDE 3: Analysis 1 ====== -->
+    <div class="slide" data-slide="3">
+      <div class="slide-inner">
+        <div class="analysis-single">
+          <div class="analysis-left">
+            <div class="card-num">1</div>
+            <h3>테마별 여행지를<br>최상단으로 이동</h3>
+            <span class="term">Information Scent · Overview First</span>
+            <p>
+              기존에는 첫 화면 직후 스크롤 애니메이션이 나와서,
+              방문자가 <span class="highlight">"이 사이트에 뭐가 있지?"를 알기도 전에 하나의 콘텐츠에 빠지는</span> 구조였습니다.
+              <br><br>
+              변경 시안에서는 8개 테마 카드를 먼저 보여줘서,
+              <strong>"강남에 이런 것들이 있구나"</strong>하고 전체 그림을 빠르게 파악할 수 있습니다.
+              <br><br>
+              "큰 그림을 먼저, 세부 사항은 나중에" 보여주는 <strong>Overview First</strong> 원칙입니다.
+            </p>
+          </div>
+          <div class="analysis-visual">
+            <div class="vis-label">변경된 상단 흐름</div>
+            <div class="vis-flow-item"><span class="vis-icon">✨</span> 메인 히어로 — 첫인상</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item accent"><span class="vis-icon">🗺️</span> 테마별 여행지 — "여기에 이런게 있구나!"</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item"><span class="vis-icon">📖</span> 시간대별 추천 — 본격 몰입 시작</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item"><span class="vis-icon">📝</span> 추천코스 — 코스 선택</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SLIDE 4: Analysis 2 ====== -->
+    <div class="slide" data-slide="4">
+      <div class="slide-inner">
+        <div class="analysis-single">
+          <div class="analysis-left">
+            <div class="card-num">2</div>
+            <h3>무거운 콘텐츠 사이에<br>쉬어가는 구간 배치</h3>
+            <span class="term">Cognitive Load Balancing</span>
+            <p>
+              기존에는 <span class="highlight">시간대별 추천 → 페스티벌 배너 → 문화행사</span>처럼
+              집중이 필요한 섹션 3개가 연달아 나왔습니다.
+              <br><br>
+              이러면 방문자가 쉽게 피로해져서 중간에 이탈할 수 있습니다.
+              <br><br>
+              변경 시안에서는 무거운 섹션 사이에 가볍게 훑어볼 수 있는 콘텐츠를 끼워 넣었습니다.
+              마치 <strong>영화에서 액션 씬 사이에 대화 씬을 넣어 긴장을 조절하는 것</strong>과 같은 원리입니다.
+            </p>
+          </div>
+          <div class="analysis-visual">
+            <div class="vis-label">기존: 무거운 콘텐츠 연속 배치</div>
+            <div class="vis-flow-item" style="background:#fde8ef;border-color:#f9c4d4;color:#c94e78;font-weight:600;"><span class="vis-icon">🔥</span> 시간대별 추천 (집중 필요)</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item" style="background:#fde8ef;border-color:#f9c4d4;color:#c94e78;font-weight:600;"><span class="vis-icon">🔥</span> 페스티벌 배너 (집중 필요)</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item" style="background:#fde8ef;border-color:#f9c4d4;color:#c94e78;font-weight:600;"><span class="vis-icon">🔥</span> 문화행사 (집중 필요)</div>
+            <div style="text-align:center;padding:12px 0 8px;font-size:11px;color:#c94e78;font-weight:600;">⚠️ 방문자 피로 누적 → 이탈 위험</div>
+            <div style="border-top:1px dashed #e0d8cf;margin:8px 0 12px;"></div>
+            <div class="vis-label">변경: 가벼운 콘텐츠로 호흡 조절</div>
+            <div class="vis-flow-item" style="background:#fde8ef;border-color:#f9c4d4;"><span class="vis-icon">🔥</span> 시간대별 추천</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item accent"><span class="vis-icon">😌</span> 추천코스 (가볍게 훑기)</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item" style="background:#fde8ef;border-color:#f9c4d4;"><span class="vis-icon">🔥</span> 페스티벌 배너</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SLIDE 5: Analysis 3 ====== -->
+    <div class="slide" data-slide="5">
+      <div class="slide-inner">
+        <div class="analysis-single">
+          <div class="analysis-left">
+            <div class="card-num">3</div>
+            <h3>관련 콘텐츠를<br>나란히 배치</h3>
+            <span class="term">Narrative Continuity · Social Proof</span>
+            <p>
+              시간대별 추천에서 "강남의 하루"를 경험한 직후, 추천코스에서 실제 코스를 골라볼 수 있게 연결했습니다.
+              <br><br>
+              <strong>"느껴봤으니, 이제 직접 골라보세요"</strong>라는 자연스러운 흐름입니다.
+              <br><br>
+              추천코스, 페스티벌 배너, 로컬추천은 각각 독립적인 콘텐츠이지만
+              모두 <strong>"뭘 해볼까?" 단계의 탐색형 콘텐츠</strong>입니다.
+              이들을 중간 영역에 모아두어 방문자가 관심사에 따라 골라볼 수 있게 했습니다.
+            </p>
+          </div>
+          <div class="analysis-visual">
+            <div class="vis-label">연결되는 콘텐츠 쌍</div>
+            <div style="margin-bottom:20px;">
+              <div style="font-size:12px;font-weight:700;color:#e8628c;margin-bottom:8px;">느낌 → 선택</div>
+              <div class="vis-flow-item"><span class="vis-icon">📖</span> 시간대별 추천 — "강남의 하루 느끼기"</div>
+              <div class="vis-arrow-down">↓ 자연스럽게 이어짐</div>
+              <div class="vis-flow-item accent"><span class="vis-icon">📝</span> 추천코스 — "이제 직접 골라보기"</div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#e8628c;margin-bottom:8px;">탐색 영역 — 관심사별 선택</div>
+              <div class="vis-flow-item"><span class="vis-icon">📝</span> 추천코스 — 코스 골라보기</div>
+              <div class="vis-arrow-down">↓</div>
+              <div class="vis-flow-item"><span class="vis-icon">💗</span> 페스티벌 배너 — 축제/행사 확인</div>
+              <div class="vis-arrow-down">↓</div>
+              <div class="vis-flow-item"><span class="vis-icon">🤝</span> 로컬추천 — 로컬 추천 탐색</div>
+              <div style="text-align:center;padding:8px 0 0;font-size:11px;color:#2a9d5c;font-weight:600;">각각 독립 콘텐츠, 관심사에 따라 선택</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SLIDE 6: Analysis 4 ====== -->
+    <div class="slide" data-slide="6">
+      <div class="slide-inner">
+        <div class="analysis-single">
+          <div class="analysis-left">
+            <div class="card-num">4</div>
+            <h3>행동 유도 콘텐츠를<br>하단에 집중 배치</h3>
+            <span class="term">Progressive Disclosure · CRO</span>
+            <p>
+              페이지 아래까지 스크롤한 방문자는 이미 관심이 높은 상태입니다.
+              <br><br>
+              그래서 <span class="highlight">실제로 행동할 수 있는 콘텐츠</span>(행사 확인, 지도 탐색, 궁금증 해소, 최종 클릭)를
+              하단에 모아두었습니다.
+              <br><br>
+              UX에서는 이를 <strong>Progressive Disclosure(점진적 공개)</strong>라 하며,
+              <strong>전환율 최적화(CRO)</strong>의 핵심 전략입니다.
+            </p>
+          </div>
+          <div class="analysis-visual">
+            <div class="vis-label">하단 행동 유도 흐름</div>
+            <div class="vis-flow-item"><span class="vis-icon">🎪</span> 문화행사 — 가볼 만한 행사 발견</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item"><span class="vis-icon">🎬</span> 유튜브 숏츠 — 영상으로 미리 보기</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item"><span class="vis-icon">🗺️</span> 둘레길 지도 — 직접 경로 탐색</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item"><span class="vis-icon">❓</span> FAQ — 궁금한 점 해소</div>
+            <div class="vis-arrow-down">↓</div>
+            <div class="vis-flow-item accent"><span class="vis-icon">🚀</span> CTA — 최종 행동 전환!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SLIDE 7: Analysis 5 ====== -->
+    <div class="slide" data-slide="7">
+      <div class="slide-inner">
+        <div class="analysis-single">
+          <div class="analysis-left">
+            <div class="card-num">5</div>
+            <h3>매 섹션마다<br>다른 레이아웃 형태</h3>
+            <span class="term">Visual Rhythm · Banner Blindness 방지</span>
+            <p>
+              같은 형태의 레이아웃이 계속 반복되면,
+              방문자가 무의식적으로 콘텐츠를 건너뛰게 됩니다.
+              이를 <strong>Banner Blindness</strong>라고 합니다.
+              <br><br>
+              변경 시안은 <span class="highlight">카드 그리드, 풀스크린, 슬라이드, 지도</span> 등
+              서로 다른 레이아웃을 번갈아 배치하여
+              매번 새로운 느낌을 줍니다.
+              <br><br>
+              방문자가 지루하지 않게, <strong>더 아래까지 스크롤</strong>하게 만드는 시각적 리듬감입니다.
+            </p>
+          </div>
+          <div class="analysis-visual">
+            <div class="vis-label">레이아웃 형태 변화</div>
+            <div class="vis-flow-item"><span class="vis-icon">⬛</span> 카드 그리드 — 테마별 여행지</div>
+            <div class="vis-arrow-down">↓ 형태 전환</div>
+            <div class="vis-flow-item accent"><span class="vis-icon">📱</span> 풀스크린 스크롤 — 시간대별 추천</div>
+            <div class="vis-arrow-down">↓ 형태 전환</div>
+            <div class="vis-flow-item"><span class="vis-icon">🃏</span> 카드 리스트 — 추천코스</div>
+            <div class="vis-arrow-down">↓ 형태 전환</div>
+            <div class="vis-flow-item accent"><span class="vis-icon">🎠</span> 슬라이드 캐러셀 — 페스티벌 배너</div>
+            <div class="vis-arrow-down">↓ 형태 전환</div>
+            <div class="vis-flow-item"><span class="vis-icon">🗺️</span> 인터랙티브 지도 — 둘레길 지도</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SLIDE 8: Summary ====== -->
+    <div class="slide slide-dark" data-slide="8">
+      <div class="slide-inner">
+        <div class="summary-content">
+          <div class="slide-title">Summary</div>
+          <div class="slide-heading">변경 시안의 UX 개선 포인트</div>
+
+          <div class="summary-grid">
+            <div class="summary-card">
+              <h4>전체 조망 우선</h4>
+              <span class="sum-term">Overview First</span>
+              <p>테마별 여행지를 상단에 배치하여, 방문자가 "여기에 뭐가 있지?"를 바로 파악할 수 있습니다.</p>
+            </div>
+            <div class="summary-card">
+              <h4>인지 부하 분산</h4>
+              <span class="sum-term">Cognitive Load Balancing</span>
+              <p>무거운 콘텐츠와 가벼운 콘텐츠를 번갈아 배치하여, 방문자가 피로 없이 끝까지 탐색합니다.</p>
+            </div>
+            <div class="summary-card">
+              <h4>이야기 흐름 연결</h4>
+              <span class="sum-term">Narrative Continuity</span>
+              <p>관련 콘텐츠를 나란히 두어, 끊김 없이 자연스럽게 이어지는 탐색 경험을 만듭니다.</p>
+            </div>
+            <div class="summary-card">
+              <h4>신뢰 → 행동 유도</h4>
+              <span class="sum-term">Social Proof → CTA</span>
+              <p>다른 사람의 경험을 먼저 보여주고 행동을 유도하여, 클릭과 참여율을 높입니다.</p>
+            </div>
+            <div class="summary-card">
+              <h4>시각적 리듬감</h4>
+              <span class="sum-term">Visual Rhythm</span>
+              <p>매 섹션마다 다른 레이아웃을 사용하여, 방문자가 지루함 없이 스크롤합니다.</p>
+            </div>
+            <div class="summary-card">
+              <h4>전환율 최적화</h4>
+              <span class="sum-term">CRO</span>
+              <p>관심이 높아진 하단 영역에 행동 유도 콘텐츠를 집중 배치하여 실제 참여로 연결합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SLIDE 9: End ====== -->
+    <div class="slide slide-end" data-slide="9">
+      <div class="slide-inner">
+        <div class="end-content">
+          <h2>Thank You</h2>
+          <p>Visit Gangnam &middot; UI/UX Layout Comparison Analysis</p>
+          <p class="end-date">2026. 03. 03</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navigation Bar -->
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="goSlide(currentSlide - 1)" disabled>
+      ← 이전
+    </button>
+    <div class="nav-progress" id="navDots"></div>
+    <div class="page-num" id="pageNum">1 / 10</div>
+    <button class="nav-btn" id="nextBtn" onclick="goSlide(currentSlide + 1)">
+      다음 →
+    </button>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageNum = document.getElementById('pageNum');
+    const navDots = document.getElementById('navDots');
+
+    // Create dots
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goSlide(i);
+      navDots.appendChild(dot);
+    }
+
+    function goSlide(n) {
+      if (n < 0 || n >= totalSlides || n === currentSlide) return;
+
+      const goingForward = n > currentSlide;
+      const oldSlide = slides[currentSlide];
+      const newSlide = slides[n];
+
+      // Disable transition on new slide, position it off-screen
+      newSlide.style.transition = 'none';
+      newSlide.style.opacity = '0';
+      newSlide.style.transform = goingForward ? 'translateX(60px)' : 'translateX(-60px)';
+      newSlide.offsetHeight; // force reflow
+
+      // Remove active from old slide
+      oldSlide.classList.remove('active');
+      oldSlide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      oldSlide.style.opacity = '0';
+      oldSlide.style.transform = goingForward ? 'translateX(-60px)' : 'translateX(60px)';
+
+      // Re-enable transition on new slide, animate in
+      setTimeout(() => {
+        newSlide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        newSlide.style.opacity = '1';
+        newSlide.style.transform = 'translateX(0)';
+        newSlide.classList.add('active');
+      }, 30);
+
+      // Clean up inline styles after animation
+      setTimeout(() => {
+        oldSlide.style.cssText = '';
+        newSlide.style.cssText = '';
+        currentSlide = n;
+        updateNav();
+      }, 450);
+    }
+
+    function updateNav() {
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+      pageNum.textContent = (currentSlide + 1) + ' / ' + totalSlides;
+
+      document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+        dot.className = 'nav-dot' + (i === currentSlide ? ' active' : '');
+      });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        goSlide(currentSlide + 1);
+      }
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goSlide(currentSlide - 1);
+      }
+    });
+
+    updateNav();
+  </script>
+
+</body>
+</html>
