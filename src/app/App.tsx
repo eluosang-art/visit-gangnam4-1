@@ -1,3 +1,4 @@
+import { GNB } from './components/GNB';
 import { Hero } from './components/Hero';
 import { ThemedDestinations } from './components/ThemedDestinations';
 import { StoryBookScroll } from './components/StoryBookScroll';
@@ -17,6 +18,7 @@ export default function App() {
       backgroundColor: '#fffaf7',
       color: '#2d2926'
     }}>
+      <GNB />
       <Hero />
       <ThemedDestinations />
       <StoryBookScroll />
