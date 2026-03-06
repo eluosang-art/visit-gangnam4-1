@@ -3,7 +3,7 @@ import { Hero } from './components/Hero';
 import { ThemedDestinations } from './components/ThemedDestinations';
 import { StoryBookScroll } from './components/StoryBookScroll';
 import { TreasureMap } from './components/TreasureMap';
-import { HallyuTourismCourses } from './components/HallyuTourismCourses';
+
 import { EditorialStories } from './components/EditorialStories';
 import { PeopleOfGangnam } from './components/PeopleOfGangnam';
 import { VideoShowcase } from './components/VideoShowcase';
@@ -22,7 +22,7 @@ export default function App() {
       <ThemedDestinations />
       <StoryBookScroll />
       <EditorialStories />
-      <HallyuTourismCourses />
+
       <PeopleOfGangnam />
       <VideoShowcase />
       <TreasureMap />

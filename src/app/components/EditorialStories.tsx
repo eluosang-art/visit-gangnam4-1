@@ -4,30 +4,39 @@ import { Briefcase } from 'lucide-react';
 const stories = [
   {
     id: 1,
-    featured: true,
     title: 'K-라이프스타일 따라잡기',
-    categoryLabel: '원데이 코스',
-    categoryBg: '#fef0ec',
-    categoryText: '#e8628c',
+    desc: '지금 유행하는 K-뷰티 핫플에서 인생 뷰티, 놓치지마세요!',
     image: '/images/story-lifestyle.png',
   },
   {
     id: 2,
-    featured: false,
     title: 'K-체험 데이',
-    categoryLabel: '한류 관광',
-    categoryBg: '#fef4ec',
-    categoryText: '#c07840',
+    desc: '한류 문화를 직접 체험하는 특별한 하루',
     image: '/images/story-kexperience.png',
   },
   {
     id: 3,
-    featured: false,
     title: 'Dessert 달콤한 강남 디저트 로드',
-    categoryLabel: '로컬 추천',
-    categoryBg: '#f0faf5',
-    categoryText: '#4a9a6a',
+    desc: '강남의 인기 디저트 맛집을 한 번에!',
     image: '/images/story-dessert.png',
+  },
+  {
+    id: 4,
+    title: '한옥의 미를 만나다',
+    desc: '전통과 현대가 어우러진 강남 속 한옥 여행',
+    image: '/images/story-hanok.png',
+  },
+  {
+    id: 5,
+    title: '오감이 즐거운 공연 예술',
+    desc: '강남에서 만나는 감동적인 라이브 공연의 세계',
+    image: '/images/story-performance.png',
+  },
+  {
+    id: 6,
+    title: '감성 로컬을 여행하다, 은마상가',
+    desc: '레트로 감성 가득한 은마상가의 숨은 핫플 탐방',
+    image: '/images/story-eunma.png',
   },
 ];
 
@@ -67,9 +76,6 @@ const SparkleStars = () => (
 );
 
 export function EditorialStories() {
-  const featuredStory = stories[0];
-  const regularStories = stories.slice(1);
-
   return (
     <section
       className="relative py-20"
@@ -125,73 +131,85 @@ export function EditorialStories() {
           </div>
         </div>
 
-        {/* Featured Story */}
+        {/* Featured - 강남 페스티벌 2026 */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-6 rounded-2xl overflow-hidden relative group cursor-pointer"
-          style={{ boxShadow: '0 4px 20px rgba(180, 140, 120, 0.12)' }}
+          className="mb-6 rounded-2xl overflow-hidden relative cursor-pointer"
+          style={{ boxShadow: '0 4px 20px rgba(180, 140, 120, 0.12)', backgroundColor: '#fff', height: '472px' }}
         >
-          <div className="relative h-[300px] md:h-[380px] overflow-hidden">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.6 }}
-              className="w-full h-full bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${featuredStory.image})`,
-                filter: 'brightness(0.85)',
-              }}
-            />
-            {/* Overlay */}
-            <div
-              className="absolute bottom-0 left-0 right-0 p-8 md:p-10"
-              style={{
-                background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
-              }}
-            >
-              <div
-                className="inline-block px-3 py-1 rounded-full mb-4"
-                style={{
-                  backgroundColor: featuredStory.categoryBg,
-                  color: featuredStory.categoryText,
-                  fontFamily: 'Pretendard, -apple-system, sans-serif',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                }}
-              >
-                {featuredStory.categoryLabel}
-              </div>
+          <img
+            src="/images/hallyu-festival.png"
+            alt="14th Gangnam Festival - HEY GANGNAM"
+            className="w-full h-full object-contain"
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to top, #fffaf7 0%, transparent 30%)',
+            }}
+          />
+          <div
+            className="absolute bottom-0 left-0 right-0 flex items-end justify-between p-6 md:px-10 md:py-8"
+          >
+            <div>
               <h3
                 style={{
                   fontFamily: 'Pretendard, -apple-system, sans-serif',
-                  fontSize: 'clamp(24px, 3vw, 30px)',
+                  fontSize: 'clamp(20px, 3vw, 26px)',
                   fontWeight: 700,
-                  color: '#fff',
+                  color: '#2d2926',
                   lineHeight: '1.3',
                 }}
               >
-                {featuredStory.title}
+                강남 페스티벌 2026
               </h3>
+              <p
+                style={{
+                  fontFamily: 'Pretendard, -apple-system, sans-serif',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: 'rgba(45,41,38,0.5)',
+                  marginTop: '4px',
+                }}
+              >
+                Gangnam Festival
+              </p>
             </div>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+              className="px-6 py-3 rounded-full shrink-0"
+              style={{
+                backgroundColor: '#e8628c',
+                color: 'white',
+                fontFamily: 'Pretendard, -apple-system, sans-serif',
+                fontSize: '14px',
+                fontWeight: 600,
+              }}
+            >
+              I'm Going!
+            </motion.button>
           </div>
         </motion.div>
 
-        {/* Regular Stories - 2 Column */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {regularStories.map((story, index) => (
+        {/* Story Cards - 3 Column Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {stories.map((story, index) => (
             <motion.div
               key={story.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.6, delay: index * 0.08 }}
               whileHover={{
                 y: -4,
                 transition: { type: 'spring', stiffness: 400, damping: 17 }
               }}
-              className="group cursor-pointer rounded-2xl overflow-hidden relative"
+              className="group cursor-pointer rounded-2xl overflow-hidden"
               style={{ boxShadow: '0 2px 12px rgba(180, 140, 120, 0.08)' }}
             >
               <div className="relative h-[220px] overflow-hidden">
@@ -199,32 +217,18 @@ export function EditorialStories() {
                   className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                   style={{
                     backgroundImage: `url(${story.image})`,
-                    filter: 'brightness(0.85)',
                   }}
                 />
-                {/* Overlay */}
                 <div
-                  className="absolute bottom-0 left-0 right-0 p-6"
+                  className="absolute bottom-0 left-0 right-0 p-5"
                   style={{
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)',
                   }}
                 >
-                  <div
-                    className="inline-block px-3 py-1 rounded-full mb-3"
-                    style={{
-                      backgroundColor: story.categoryBg,
-                      color: story.categoryText,
-                      fontFamily: 'Pretendard, -apple-system, sans-serif',
-                      fontSize: '12px',
-                      fontWeight: 600,
-                    }}
-                  >
-                    {story.categoryLabel}
-                  </div>
                   <h3
                     style={{
                       fontFamily: 'Pretendard, -apple-system, sans-serif',
-                      fontSize: '20px',
+                      fontSize: '17px',
                       fontWeight: 700,
                       color: '#fff',
                       lineHeight: '1.4',
@@ -232,6 +236,18 @@ export function EditorialStories() {
                   >
                     {story.title}
                   </h3>
+                  <p
+                    style={{
+                      fontFamily: 'Pretendard, -apple-system, sans-serif',
+                      fontSize: '13px',
+                      fontWeight: 400,
+                      color: 'rgba(255,255,255,0.7)',
+                      lineHeight: '1.5',
+                      marginTop: '4px',
+                    }}
+                  >
+                    {story.desc}
+                  </p>
                 </div>
               </div>
             </motion.div>
