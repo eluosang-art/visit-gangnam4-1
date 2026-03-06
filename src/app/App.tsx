@@ -6,7 +6,6 @@ import { TreasureMap } from './components/TreasureMap';
 import { HallyuTourismCourses } from './components/HallyuTourismCourses';
 import { EditorialStories } from './components/EditorialStories';
 import { PeopleOfGangnam } from './components/PeopleOfGangnam';
-import { CulturalEvents } from './components/CulturalEvents';
 import { VideoShowcase } from './components/VideoShowcase';
 import { CTAFooter } from './components/CTAFooter';
 import { FAQ } from './components/FAQ';
@@ -25,7 +24,6 @@ export default function App() {
       <EditorialStories />
       <HallyuTourismCourses />
       <PeopleOfGangnam />
-      <CulturalEvents />
       <VideoShowcase />
       <TreasureMap />
       <FAQ />

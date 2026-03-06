@@ -62,7 +62,7 @@ const SunMoonArc = ({ progress }: { progress: number }) => {
   const isMorning = progress < 0.5;
 
   return (
-    <div className="fixed top-8 left-1/2 -translate-x-1/2 w-[80%] max-w-[1000px] z-30 pointer-events-none hidden md:block">
+    <div className="fixed top-[88px] left-1/2 -translate-x-1/2 w-[80%] max-w-[1000px] z-30 pointer-events-none hidden md:block">
       <svg viewBox="0 0 1000 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
         <path
           ref={pathRef}

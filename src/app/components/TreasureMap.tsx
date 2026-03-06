@@ -39,18 +39,18 @@ const LandmarkCard = ({ landmark, onClose }: { landmark: typeof landmarks[0]; on
     exit={{ opacity: 0, y: 20, scale: 0.95 }}
     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
     className="bg-white rounded-3xl overflow-hidden"
-    style={{ width: '280px', boxShadow: '0 8px 32px rgba(180, 140, 120, 0.2)' }}
+    style={{ width: '400px', height: '540px', boxShadow: '0 8px 32px rgba(180, 140, 120, 0.2)', display: 'flex', flexDirection: 'column' }}
   >
-    <div className="relative">
+    <div className="relative" style={{ flex: 1, minHeight: 0 }}>
       <div
-        className="w-full h-40 bg-cover bg-center"
+        className="w-full h-full bg-cover bg-center"
         style={{ backgroundImage: `url(${landmark.image})` }}
       />
       <button onClick={onClose} className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-1.5 hover:bg-white transition-colors z-10">
         <X className="w-4 h-4" style={{ color: '#2d2926' }} />
       </button>
     </div>
-    <div style={{ padding: '24px' }}>
+    <div style={{ padding: '24px', flexShrink: 0 }}>
       <h3 style={{ fontFamily: 'Pretendard', fontSize: '18px', fontWeight: 700, color: '#2d2926', marginBottom: '8px' }}>
         {landmark.name}
       </h3>
@@ -139,9 +139,9 @@ export function TreasureMap() {
             transition={{ duration: 0.8 }}
             className="relative"
             style={{
-              width: '950px',
+              flex: 1,
               height: '540px',
-              maxWidth: '100%',
+              minWidth: 0,
               backgroundColor: '#fef9f4',
               borderRadius: '24px',
               border: '1px solid #f0ebe6',
@@ -211,7 +211,7 @@ export function TreasureMap() {
           </motion.div>
 
           {/* Card Area */}
-          <div className="hidden lg:flex flex-col items-center justify-center flex-1 min-w-[280px]">
+          <div className="hidden lg:flex flex-col items-center justify-center min-w-[400px]">
             <AnimatePresence mode="wait">
               {selectedLandmark ? (
                 <LandmarkCard key={selectedLandmark.id} landmark={selectedLandmark} onClose={() => setActiveLandmark(null)} />
@@ -221,8 +221,8 @@ export function TreasureMap() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="bg-white rounded-3xl p-8 text-center"
-                  style={{ width: '280px', boxShadow: '0 8px 32px rgba(180, 140, 120, 0.15)' }}
+                  className="bg-white rounded-3xl p-8 text-center flex flex-col items-center justify-center"
+                  style={{ width: '400px', height: '540px', boxShadow: '0 8px 32px rgba(180, 140, 120, 0.15)' }}
                 >
                   <MapPin className="w-10 h-10 mx-auto mb-3" style={{ color: '#e8628c', opacity: 0.3 }} />
                   <p style={{ fontFamily: 'Pretendard', fontSize: '14px', fontWeight: 400, color: '#b8a99a' }}>

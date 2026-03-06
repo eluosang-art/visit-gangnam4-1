@@ -70,7 +70,7 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative h-full max-w-[1280px] mx-auto px-5 md:px-20 flex flex-col justify-center">
-        <div className="md:max-w-[600px]" style={{ marginTop: '-10vh' }}>
+        <div className="md:max-w-[600px]" style={{ marginTop: 'calc(-10vh + 40px)' }}>
           {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
