@@ -98,8 +98,16 @@ export function GNB() {
                   opacity: 0.92,
                   transition: 'opacity 0.2s, color 0.3s',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.92'; }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  if (scrollProgress > 0.5) {
+                    e.currentTarget.style.color = '#e8628c';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = '0.92';
+                  e.currentTarget.style.color = textColor;
+                }}
               >
                 {item}
               </a>
