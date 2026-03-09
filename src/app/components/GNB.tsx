@@ -20,15 +20,9 @@ export function GNB() {
     '강남페스티벌',
   ];
 
-  const r = Math.round(255 * scrollProgress);
-  const g = Math.round(255 * scrollProgress);
-  const b = Math.round(255 * scrollProgress);
-  const bgColor = `rgba(${r}, ${g}, ${b}, ${0.5 + 0.5 * scrollProgress})`;
-
-  const tr = Math.round(255 * (1 - scrollProgress));
-  const tg = Math.round(255 * (1 - scrollProgress));
-  const tb = Math.round(255 * (1 - scrollProgress));
-  const textColor = `rgb(${tr}, ${tg}, ${tb})`;
+  const scrolled = scrollProgress > 0.3;
+  const bgColor = scrolled ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0.5)';
+  const textColor = scrolled ? '#000' : '#fff';
   const strokeColor = textColor;
 
   return (
@@ -42,7 +36,8 @@ export function GNB() {
         background: bgColor,
         height: 80,
         padding: '0 80px',
-        boxShadow: `0 4px 20px rgba(0, 0, 0, ${0.3 - 0.2 * scrollProgress})`,
+        transition: 'background 0.3s, box-shadow 0.3s',
+        boxShadow: scrolled ? '0 4px 20px rgba(0, 0, 0, 0.1)' : '0 4px 20px rgba(0, 0, 0, 0.3)',
       }}
     >
       <div
@@ -59,12 +54,12 @@ export function GNB() {
           <img
             src="/images/logo-visit-gangnam.png"
             alt="Visit Gangnam"
-            style={{ width: 50, height: 50, position: 'absolute', top: 0, left: 0, opacity: 1 - scrollProgress }}
+            style={{ width: 50, height: 50, position: 'absolute', top: 0, left: 0, opacity: scrolled ? 0 : 1, transition: 'opacity 0.3s' }}
           />
           <img
             src="/images/image-33.png"
             alt="Visit Gangnam"
-            style={{ width: 50, height: 50, position: 'absolute', top: 0, left: 0, opacity: scrollProgress }}
+            style={{ width: 50, height: 50, position: 'absolute', top: 0, left: 0, opacity: scrolled ? 1 : 0, transition: 'opacity 0.3s' }}
           />
         </a>
 
